@@ -3,6 +3,7 @@ import curses
 class GUI:
     def __init__(self):
         self.stdscr = None
+        self.input_queue = []
 
         self.setup_screen()
         self.setup_windows()
@@ -12,6 +13,7 @@ class GUI:
         curses.nocbreak()
         self.stdscr.keypad(0)
         curses.curs_set(1)
+        curses.nodelay(1)
         curses.echo()
         curses.endwin()
 
@@ -34,7 +36,10 @@ class GUI:
         self.status_window.refresh()
 
     def update_game(self, world):
-        pass
+        input = self.stdscr.getch()
+
+        if input == curses.KEY_LEFT:
+            self.input_queue.append("LEFT")
 
     def update_status(self, next_block, score):
         pass

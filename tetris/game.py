@@ -11,7 +11,11 @@ class Game:
 
     def run(self):
         while True:
-            pass
+            self.gui.update_game(None)
+
+            while len(self.gui.input_queue > 0):
+                pass
+
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()
