@@ -11,6 +11,7 @@ class GUI:
     def destroy(self):
         curses.nocbreak()
         self.stdscr.keypad(0)
+        curses.curs_set(1)
         curses.echo()
         curses.endwin()
 
@@ -19,6 +20,7 @@ class GUI:
 
         curses.noecho()
         curses.cbreak()
+        curses.curs_set(0)
         self.stdscr.keypad(1)
 
     def setup_windows(self):
