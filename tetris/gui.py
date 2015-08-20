@@ -1,5 +1,8 @@
 import curses
 
+import worldrenderer
+
+
 class GUI:
     def __init__(self):
         self.stdscr = None
@@ -12,6 +15,8 @@ class GUI:
 
         self.setup_screen()
         self.setup_windows()
+        
+        self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
 
 
     def destroy(self):
@@ -30,16 +35,14 @@ class GUI:
         self.stdscr.keypad(1)
 
     def setup_windows(self):
-        self.game_window = curses.newwin(30, 40, 0, 0)
-        self.status_window = curses.newwin(30, 20, 0, 40)
+        self.game_window = curses.newwin(30, 41, 0, 0)
+        self.status_window = curses.newwin(30, 20, 0, 41)
 
-        self.input_window = curses.newwin(0, 0, 0, 60) 
+        self.input_window = curses.newwin(0, 0, 0, 61) 
         self.input_window.keypad(1)
 
         self.game_window.box()
         self.status_window.box()
-
-        self.game_window.addstr(1, 1, "hello")
 
         self.game_window.refresh()
         self.status_window.refresh()
@@ -53,6 +56,9 @@ class GUI:
             return None
 
     def draw_game(self, world):
+        self.game_window.erase()
+        self.game_window.box()
+        self.world_renderer.draw(world)
         self.game_window.refresh()
         
     def draw_status(self, next_block, score):

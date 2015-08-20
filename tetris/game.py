@@ -19,8 +19,6 @@ class Game:
                 self.gui.status_window.addch(action)
                 self.gui.draw_game(None)
 
-            self.gui.game_window.addstr(1, 1, str(time.time()) + " " + str(self.last_tick))
-
             if time.time() > (self.last_tick + self.tick_rate):
                 self.gui.status_window.addch('T')
                 self.last_tick = time.time()
