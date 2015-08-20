@@ -39,3 +39,18 @@ class Game:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()
+
+class World:
+    def __init__(self, width, height):
+        self.world = [[None for x in range(width)] for x in range(height)]
+
+    def add_block(self, block):
+        for (ypos, yline) in enumerate(block.shape):
+            for (xpos, xline) in enumerate(yline):
+                self.world[block.ypos+ypos][block.xpos+xpos] = block.shape[ypos][xpos]
+
+class Block:
+    def __init__(self, shape, xpos=0, ypos=0):
+        self.shape = shape
+        self.xpos = xpos
+        self.ypos = ypos
