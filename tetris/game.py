@@ -14,17 +14,20 @@ class Game:
         self.last_tick = self.start
 
         while True:
-            self.gui.update_game(None)
-            
             action = self.gui.get_input((self.last_tick + self.tick_rate) - time.time())
             if action != None:
                 self.gui.status_window.addch(action)
+                self.gui.draw_game(None)
 
             self.gui.game_window.addstr(1, 1, str(time.time()) + " " + str(self.last_tick))
 
             if time.time() > (self.last_tick + self.tick_rate):
                 self.gui.status_window.addch('T')
                 self.last_tick = time.time()
+
+                self.gui.draw_game(None)
+                self.gui.draw_status(None, None)
+            
 
 
     def __exit__(self, exc_type, exc_value, traceback):

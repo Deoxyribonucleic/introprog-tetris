@@ -44,12 +44,6 @@ class GUI:
         self.game_window.refresh()
         self.status_window.refresh()
 
-    def update_game(self, world):
-        self.status_window.box()
-        self.status_window.refresh()
-        self.game_window.box()
-        self.game_window.refresh()
-
     def get_input(self, timeout):
         self.input_window.timeout(int(timeout * 1000))
         key = self.input_window.getch()
@@ -57,9 +51,10 @@ class GUI:
             return self.key_binds[key]
         else:
             return None
+
+    def draw_game(self, world):
+        self.game_window.refresh()
         
-
-    def update_status(self, next_block, score):
-        pass
-
+    def draw_status(self, next_block, score):
+        self.status_window.refresh()
 
