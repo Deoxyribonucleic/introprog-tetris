@@ -14,13 +14,18 @@ class Game:
         
         self.world = tetris.world.World(self.world_width, self.world_height)
 
-        self.world.add_block(tetris.block.Block(tetris.block.blocks[0]))
-        self.world.add_block(tetris.block.Block(tetris.block.blocks[1], 3, 5))
+        self.world.add_block(tetris.block.Block(tetris.block.blocks[0], 0, self.world_height - 5))
+        self.world.add_block(tetris.block.Block(tetris.block.blocks[1], 2, self.world_height - 4))
 
+        self.next_block = self.create_random_block()
+        self.current_block = None
 
     def __enter__(self):
         self.gui = tetris.gui.GUI()
         return self
+
+    def create_random_block(self):
+        return tetris.block.Block(tetris.block.blocks[1], 3, 3)
 
     def run(self):
         self.start = time.time()
@@ -28,13 +33,18 @@ class Game:
 
         # render once at start
         self.gui.draw_status(None, None)
-        self.gui.draw_game(self.world)
+        self.gui.draw_game(self.world, self.current_block)
 
         while True:
+            if self.current_block == None:
+                self.current_block = self.next_block
+                self.next_block = self.create_random_block()
+
             action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
+
             if action != None:
                 self.gui.status_window.addch(action)
-                self.gui.draw_game(self.world)
+                self.gui.draw_game(self.world, self.current_block)
 
             if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
@@ -48,9 +58,10 @@ class Game:
         if self.tick_interval <= 0.2:
             self.tick_interval = 0.95 ** self.points
 
-        self.gui.draw_game(self.world)
+        self.current_block.ypos+=1
+
+        self.gui.draw_game(self.world, self.current_block)
         self.gui.draw_status(None, None)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()
-

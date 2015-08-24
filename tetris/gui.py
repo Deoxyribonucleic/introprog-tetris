@@ -55,10 +55,12 @@ class GUI:
         else:
             return None
 
-    def draw_game(self, world):
+    def draw_game(self, world, current_block):
         self.game_window.erase()
         self.game_window.box()
         self.world_renderer.draw(world)
+        if current_block:
+            self.world_renderer.draw_block(current_block)
         self.game_window.refresh()
         
     def draw_status(self, next_block, score):
