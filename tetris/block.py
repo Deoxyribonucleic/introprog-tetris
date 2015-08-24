@@ -16,6 +16,16 @@ class Block:
                     self.ypos = self.ypos - n
         self.shape = [[e[len(self.shape[0])-1-i] for e in self.shape] for i in range(len(self.shape[0]))]
 
+    def get_width(self):
+        return len(self.shape[0])
+
+    def get_height(self):
+        return len(self.shape)
+
+    def get_bottom_in_column(self, column):
+        for y in range(self.get_height()):
+            pass
+
 blocks = [
     {
         "shape": 

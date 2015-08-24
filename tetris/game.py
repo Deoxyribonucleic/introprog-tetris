@@ -28,7 +28,7 @@ class Game:
         return self
 
     def create_random_block(self):
-        return tetris.block.Block(tetris.block.blocks[1], 3, 3)
+        return tetris.block.Block(tetris.block.blocks[0], self.world_width / 2 - 2, 0)
 
     def run(self):
         self.start = time.time()
@@ -68,14 +68,11 @@ class Game:
         self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
-        #self.points += 1 flyttas till där man ska få poäng
-
         if self.tick_interval <= 0.2:
             self.tick_interval = 0.95 ** self.points
 
-        if self.current_block.ypos
-
-        self.current_block.ypos+=1
+        self.current_block.ypos += 1
+        #self.current_block.rotate()
 
         self.gui.draw_game(self.world, self.current_block)
         self.gui.draw_status(None, None)
@@ -88,3 +85,4 @@ class Action:
     down = 2
     move_left = 3
     move_right = 4
+
