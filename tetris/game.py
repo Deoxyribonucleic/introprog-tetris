@@ -49,10 +49,10 @@ class Game:
                 if action == Action.down:
                     pass
 
-                if action == Action.move_left:
+                if action == Action.move_left and self.current_block.xpos > 0:
                     self.current_block.xpos -= 1
 
-                if action == Action.move_right:
+                if action == Action.move_right and (self.current_block.xpos + 4) < self.world_width:
                     self.current_block.xpos += 1
 
                 self.gui.status_window.addch(action)
@@ -65,12 +65,11 @@ class Game:
         self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
-        #self.points += 1 flyttas till där man ska få poäng
+        #self.points += 1
 
         if self.tick_interval <= 0.2:
             self.tick_interval = 0.95 ** self.points
 
-        if self.current_block.ypos
 
         self.current_block.ypos+=1
 
