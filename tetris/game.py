@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import tetris.gui
 import tetris.block
 import tetris.world
