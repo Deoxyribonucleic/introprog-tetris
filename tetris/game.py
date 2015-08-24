@@ -43,6 +43,18 @@ class Game:
             action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
 
             if action != None:
+                if action == Action.rotate:
+                    self.current_block.rotate()
+
+                if action == Action.down:
+                    pass
+
+                if action == Action.move_left:
+                    self.current_block.xpos -= 1
+
+                if action == Action.move_right:
+                    self.current_block.xpos += 1
+
                 self.gui.status_window.addch(action)
                 self.gui.draw_game(self.world, self.current_block)
 
@@ -53,10 +65,12 @@ class Game:
         self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
-        self.points += 1 #flyttas till där man ska få poäng
+        #self.points += 1 flyttas till där man ska få poäng
 
         if self.tick_interval <= 0.2:
             self.tick_interval = 0.95 ** self.points
+
+        if self.current_block.ypos
 
         self.current_block.ypos+=1
 
@@ -65,3 +79,9 @@ class Game:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()
+
+class Action:
+    rotate = 1
+    down = 2
+    move_left = 3
+    move_right = 4

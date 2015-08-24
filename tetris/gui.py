@@ -1,6 +1,8 @@
 import curses
 
 import worldrenderer
+import game
+
 
 
 class GUI:
@@ -9,8 +11,10 @@ class GUI:
         self.input_queue = []
 
         self.key_binds = {
-                    curses.KEY_UP: 'A',
-                    curses.KEY_DOWN: 'B'
+                    curses.KEY_UP: game.Action.rotate,
+                    curses.KEY_DOWN: game.Action.down,
+                    curses.KEY_LEFT: game.Action.move_left,
+                    curses.KEY_RIGHT: game.Action.move_right
                 }
 
         self.setup_screen()
