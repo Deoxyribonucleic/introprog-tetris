@@ -8,7 +8,8 @@ class Game:
         self.world_width = 13
         self.world_height = 15
         
-        self.world = [['X', 'X'], ['#', 'O']]
+        self.world = World(self.world_width, self.world_height)
+        self.world.add_block(Block([['X', None, None], ['X', 'X', 'X']]))
 
 
     def __enter__(self):
@@ -19,6 +20,10 @@ class Game:
         self.start = time.time()
         self.last_tick = self.start
 
+        # render once at start
+        self.gui.draw_status(None, None)
+        self.gui.draw_game(self.world)
+
         while True:
             action = self.gui.get_input((self.last_tick + self.tick_rate) - time.time())
             if action != None:
@@ -26,16 +31,17 @@ class Game:
                 self.gui.draw_game(self.world)
 
             if time.time() > (self.last_tick + self.tick_rate):
-                self.gui.status_window.addch('T')
-                self.last_tick = time.time()
-
-                self.points += 1
-                self.tick_rate = 0.95 ** self.points
-
-                self.gui.draw_game(self.world)
-                self.gui.draw_status(None, None)
+                self.tick()
             
+    def tick(self):
+        self.gui.status_window.addch('T')
+        self.last_tick = time.time()
 
+        self.points += 1
+        self.tick_rate = 0.95 ** self.points
+
+        self.gui.draw_game(self.world)
+        self.gui.draw_status(None, None)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()

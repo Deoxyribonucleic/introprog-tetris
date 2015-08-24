@@ -5,9 +5,10 @@ class WorldRenderer:
         self.window = window
 
     def draw(self, world):
-        for x in range(len(world)):
-            for y in range(len(world)):
-                self._draw_block(x, y, world[x][y]) 
+        for y in range(len(world.world)):
+            for x in range(len(world.world[y])):
+                if world.world[y][x]:
+                    self._draw_block(x, y, world.world[y][x]) 
 
     def _draw_block(self, x, y, block_type):
         for offset_x in range(0, 3):
