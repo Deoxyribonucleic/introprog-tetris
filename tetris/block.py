@@ -1,3 +1,10 @@
+class Block:
+    def __init__(self, block_type, xpos=0, ypos=0):
+        self.shape = block_type["shape"]
+        self.representation = block_type["representation"]
+        self.xpos = xpos
+        self.ypos = ypos
+
 blocks = [
     {
         "shape": 
