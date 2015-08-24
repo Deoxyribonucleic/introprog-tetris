@@ -72,6 +72,10 @@ class Game:
             self.tick_interval = 0.95 ** self.points
 
         self.current_block.ypos += 1
+        if self.world.collides(self.current_block):
+            self.current_block.ypos -= 1
+            self.world.add_block(self.current_block)
+            self.current_block = None
         #self.current_block.rotate()
 
         self.gui.draw_game(self.world, self.current_block)

@@ -22,10 +22,6 @@ class Block:
     def get_height(self):
         return len(self.shape)
 
-    def get_bottom_in_column(self, column):
-        for y in range(self.get_height()):
-            pass
-
 blocks = [
     {
         "shape": 
