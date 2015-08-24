@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import tetris.gui
 import tetris.block
 import tetris.world
@@ -25,7 +28,7 @@ class Game:
         return self
 
     def create_random_block(self):
-        return tetris.block.Block(tetris.block.blocks[1], 3, 3)
+        return tetris.block.Block(tetris.block.blocks[0], self.world_width / 2 - 2, 0)
 
     def run(self):
         self.start = time.time()
@@ -65,11 +68,8 @@ class Game:
         self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
-        #self.points += 1
-
         if self.tick_interval <= 0.2:
             self.tick_interval = 0.95 ** self.points
-
 
         self.current_block.ypos+=1
 
@@ -84,3 +84,4 @@ class Action:
     down = 2
     move_left = 3
     move_right = 4
+

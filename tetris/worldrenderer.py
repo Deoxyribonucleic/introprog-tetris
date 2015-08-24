@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import curses
 
 class WorldRenderer:
@@ -14,7 +17,7 @@ class WorldRenderer:
         for y in range(len(block.shape)):
             for x in range(len(block.shape[y])):
                 if block.shape[y][x]:
-                    self._draw_block_element(x + block.xpos, y + block.ypos, block.representation if block.shape[y][x] == 1 else None) 
+                    self._draw_block_element(x + block.xpos, y + block.ypos, block.representation if block.shape[y][x] != 0 else None) 
 
     def _draw_block_element(self, x, y, block_type):
         for offset_x in range(0, 3):
