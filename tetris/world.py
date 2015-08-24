@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 class World:
     def __init__(self, width, height):
         self.world = [[None for x in range(width)] for x in range(height)]

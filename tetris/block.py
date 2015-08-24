@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 class Block:
     def __init__(self, block_type, xpos=0, ypos=0):
         self.shape = block_type["shape"]
