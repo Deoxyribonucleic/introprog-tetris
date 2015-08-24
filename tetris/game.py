@@ -52,10 +52,10 @@ class Game:
                 if action == Action.down:
                     pass
 
-                if action == Action.move_left:
+                if action == Action.move_left and self.current_block.xpos > 0:
                     self.current_block.xpos -= 1
 
-                if action == Action.move_right:
+                if action == Action.move_right and (self.current_block.xpos + 4) < self.world_width:
                     self.current_block.xpos += 1
 
                 self.gui.status_window.addch(action)
@@ -76,7 +76,6 @@ class Game:
             self.current_block.ypos -= 1
             self.world.add_block(self.current_block)
             self.current_block = None
-        #self.current_block.rotate()
 
         self.gui.draw_game(self.world, self.current_block)
         self.gui.draw_status(None, None)
