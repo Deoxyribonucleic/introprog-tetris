@@ -6,7 +6,7 @@ import time
 
 class Game:
     def __init__(self):
-        self.tick_rate = 1
+        self.tick_interval = 1
         self.points = 0
 
         self.world_width = 13
@@ -40,20 +40,23 @@ class Game:
                 self.current_block = self.next_block
                 self.next_block = self.create_random_block()
 
-            action = self.gui.get_input((self.last_tick + self.tick_rate) - time.time())
+            action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
+
             if action != None:
                 self.gui.status_window.addch(action)
                 self.gui.draw_game(self.world, self.current_block)
 
-            if time.time() > (self.last_tick + self.tick_rate):
+            if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
             
     def tick(self):
         self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
-        self.points += 1
-        self.tick_rate = 0.95 ** self.points
+        self.points += 1 #flyttas till där man ska få poäng
+
+        if self.tick_interval <= 0.2:
+            self.tick_interval = 0.95 ** self.points
 
         self.current_block.ypos+=1
 
