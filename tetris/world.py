@@ -14,12 +14,9 @@ class World:
                     self.world[block.ypos+ypos][block.xpos+xpos] = block.representation
 
     def collides(self, block):
-        if block.ypos < 0 or block.xpos < 0 or (block.xpos + block.get_width()) >= self.width or (block.ypos + block.get_height()) >= self.height:
-            return True
-
         for (ypos, yline) in enumerate(block.shape):
             for (xpos, xline) in enumerate(yline):
-                if block.shape[ypos][xpos] != 0 and self.world[block.ypos+ypos][block.xpos+xpos] != None:
+                if block.shape[ypos][xpos] != 0 and (block.ypos + ypos < 0 or block.ypos + ypos >= self.height or block.xpos + xpos < 0 or block.xpos + xpos >= self.width or self.world[block.ypos+ypos][block.xpos+xpos] != None):
                     return True
         return False
         
