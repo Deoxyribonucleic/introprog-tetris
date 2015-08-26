@@ -43,7 +43,7 @@ class Game:
         self.last_tick = self.start
 
         # render once at start
-        self.gui.draw_status(self.next_block, None)
+        self.gui.draw_status(self.next_block, self.points)
         self.gui.draw_game(self.world, self.current_block)
 
         while True:
@@ -51,6 +51,7 @@ class Game:
                 self.current_block = self.next_block
                 self.next_block = self.create_random_block()
                 self.gui.draw_game(self.world, self.current_block)
+                self.gui.draw_status(self.next_block, self.points)
 
             action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
 
@@ -106,7 +107,7 @@ class Game:
             self.current_block = None
 
         self.gui.draw_game(self.world, self.current_block)
-        self.gui.draw_status(self.next_block, None)
+        self.gui.draw_status(self.next_block, self.points)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()

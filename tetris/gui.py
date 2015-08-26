@@ -46,6 +46,9 @@ class GUI:
         self.input_window = curses.newwin(0, 0, 0, 0) # world_width * 3 + 2 + 20) 
         self.input_window.keypad(1)
 
+        self.next_block_window = self.status_window.derwin(10,14,4,3)
+        self.next_block_window.box()
+
         self.game_window.box()
         self.status_window.box()
 
