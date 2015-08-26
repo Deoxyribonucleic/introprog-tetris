@@ -7,11 +7,15 @@ class Renderer:
     def __init__(self, window):
         self.window = window
     
-    def draw_block(self, block):
+    def draw_block(self, block, xpos = None, ypos = None):
+        if xpos == None:
+            xpos = block.xpos
+        if ypos == None:
+            ypos = block.ypos
         for y in range(len(block.shape)):
             for x in range(len(block.shape[y])):
                 if block.shape[y][x]:
-                    self._draw_block_element(x + block.xpos, y + block.ypos, block.representation if block.shape[y][x] != 0 else None) 
+                    self._draw_block_element(x + xpos, y + ypos, block.representation if block.shape[y][x] != 0 else None) 
 
     def _draw_block_element(self, x, y, block_type):
         for offset_x in range(0, 3):
@@ -27,8 +31,7 @@ class WorldRenderer(Renderer):
 
 class NextBlockRenderer(Renderer):
     def draw(self, next_block):
-        self.next_block=next_block
-        self.next_block.xpos=1
-        self.next_block.ypos=2
-        self.draw_block(next_block)
+        self.window.clear()
+        self.window.box()
+        self.draw_block(next_block, 0, 0)
         
