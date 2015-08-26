@@ -19,7 +19,7 @@ class World:
 
         for (ypos, yline) in enumerate(block.shape):
             for (xpos, xline) in enumerate(yline):
-                if self.world[block.ypos+ypos][block.xpos+xpos] != None:
+                if block.shape[ypos][xpos] != 0 and self.world[block.ypos+ypos][block.xpos+xpos] != None:
                     return True
         return False
         

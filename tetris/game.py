@@ -12,7 +12,7 @@ class Game:
         self.tick_interval = 1
         self.points = 0
 
-        self.world_width = 13
+        self.world_width = 14
         self.world_height = 15
         
         self.world = tetris.world.World(self.world_width, self.world_height)
@@ -47,16 +47,30 @@ class Game:
 
             if action != None:
                 if action == Action.rotate:
+                    # fix this crap
+                    original_x = self.current_block.xpos
+                    original_y = self.current_block.ypos
                     self.current_block.rotate()
+                    # if we end up colliding, reverse operation
+                    if self.world.collides(self.current_block):
+                        self.current_block.rotate()
+                        self.current_block.rotate() # :D
+                        self.current_block.rotate()
+                        self.current_block.xpos = original_x
+                        self.current_block.ypos = original_y
 
                 if action == Action.down:
                     self.tick()
 
-                if action == Action.move_left and self.current_block.xpos > 0:
+                if action == Action.move_left:
                     self.current_block.xpos -= 1
+                    if self.world.collides(self.current_block):
+                        self.current_block.xpos += 1
 
-                if action == Action.move_right and (self.current_block.xpos + 4) < self.world_width:
+                if action == Action.move_right:
                     self.current_block.xpos += 1
+                    if self.world.collides(self.current_block):
+                        self.current_block.xpos -= 1
 
                 self.gui.status_window.addch(action)
                 self.gui.draw_game(self.world, self.current_block)
