@@ -4,6 +4,15 @@
 import curses
                     
 class Renderer:
+    block_colors = {
+            'I': 1,
+            'T': 2,
+            'O': 3,
+            'L': 4,
+            'J': 5,
+            'S': 6,
+            'Z': 7
+            }
     def __init__(self, window):
         self.window = window
     
@@ -20,7 +29,7 @@ class Renderer:
     def _draw_block_element(self, x, y, block_type):
         for offset_x in range(0, 3):
             for offset_y in range(0, 2):
-                self.window.addch(y * 2 + offset_y + 1, x * 3 + offset_x + 1, block_type) # +1 on both to accomodate for border
+                self.window.addch(y * 2 + offset_y + 1, x * 3 + offset_x + 1, ' ', curses.color_pair(Renderer.block_colors[block_type])) # +1 on both to accomodate for border
 
 class WorldRenderer(Renderer):
     def draw(self, world):

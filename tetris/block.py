@@ -74,5 +74,14 @@ blocks = [
             [0,1]
         ],
         "representation": 'S'
+    },
+    {
+        "shape":
+        [
+            [0,1],
+            [1,1],
+            [1,0]
+        ],
+        "representation": 'Z'
     }
 ]

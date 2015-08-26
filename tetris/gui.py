@@ -20,6 +20,7 @@ class GUI:
 
         self.setup_screen()
         self.setup_windows(world_width, world_height)
+
         
         self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
         self.next_block_renderer = worldrenderer.NextBlockRenderer(self.next_block_window)
@@ -33,11 +34,22 @@ class GUI:
 
     def setup_screen(self):
         self.stdscr = curses.initscr()
+        curses.start_color()
+        self.init_colors()
 
         curses.noecho()
         curses.cbreak()
         curses.curs_set(0)
         self.stdscr.keypad(1)
+
+    def init_colors(self):
+        curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_RED)
+        curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_BLUE)
+        curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_YELLOW)
+        curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_GREEN)
+        curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_CYAN)
+        curses.init_pair(6, curses.COLOR_BLACK, curses.COLOR_MAGENTA)
+        curses.init_pair(7, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
     def setup_windows(self, world_width, world_height):
         self.game_window = curses.newwin(world_height * 2 + 2, world_width * 3 + 2, 0, 0)
