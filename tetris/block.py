@@ -19,11 +19,6 @@ class Block:
     #                 self.ypos = self.ypos - m
         self.shape = [[e[len(self.shape[0])-1-i] for e in self.shape] for i in range(len(self.shape[0]))]
 
-    def get_width(self):
-        return len(self.shape[0])
-
-    def get_height(self):
-        return len(self.shape)
 
 blocks = [
     {
