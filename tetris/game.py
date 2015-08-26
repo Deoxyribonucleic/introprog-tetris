@@ -50,7 +50,7 @@ class Game:
                     self.current_block.rotate()
 
                 if action == Action.down:
-                    pass
+                    self.tick()
 
                 if action == Action.move_left and self.current_block.xpos > 0:
                     self.current_block.xpos -= 1
