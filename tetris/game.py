@@ -83,8 +83,10 @@ class Game:
             if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
 
-            if self.world.line_check() is not None:
+            while self.world.line_check() is not None:
                 self.points += 1
+                self.world.remove_line(self.world.line_check())
+
 
             
     def tick(self):

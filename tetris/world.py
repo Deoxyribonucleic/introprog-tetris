@@ -22,6 +22,10 @@ class World:
         
     def line_check(self):
         for row in self.world:
-            if row[1] != 0:
+            if None not in row:
                 return row
+
+    def remove_line(self, line):
+        self.world.remove(line)
+        self.world.insert(0, [None for x in range(self.width)])
 
