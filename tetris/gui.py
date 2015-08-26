@@ -3,7 +3,7 @@
 
 import curses
 
-import worldrenderer
+import renderer
 import game
 
 class GUI:
@@ -22,8 +22,8 @@ class GUI:
         self.setup_windows(world_width, world_height)
 
         
-        self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
-        self.next_block_renderer = worldrenderer.NextBlockRenderer(self.next_block_window)
+        self.world_renderer = renderer.WorldRenderer(self.game_window)
+        self.next_block_renderer = renderer.NextBlockRenderer(self.next_block_window)
 
     def destroy(self):
         curses.nocbreak()
