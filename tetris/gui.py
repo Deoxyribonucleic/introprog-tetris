@@ -9,7 +9,7 @@ import game
 
 
 class GUI:
-    def __init__(self):
+    def __init__(self, world_width, world_height):
         self.stdscr = None
         self.input_queue = []
 
@@ -21,7 +21,7 @@ class GUI:
                 }
 
         self.setup_screen()
-        self.setup_windows()
+        self.setup_windows(world_width, world_height)
         
         self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
 
@@ -41,11 +41,11 @@ class GUI:
         curses.curs_set(0)
         self.stdscr.keypad(1)
 
-    def setup_windows(self):
-        self.game_window = curses.newwin(30, 41, 0, 0)
-        self.status_window = curses.newwin(30, 20, 0, 41)
+    def setup_windows(self, world_width, world_height):
+        self.game_window = curses.newwin(world_height * 2 + 2, world_width * 3 + 2, 0, 0)
+        self.status_window = curses.newwin(world_height * 2 + 2, 20, 0, world_width * 3 + 2)
 
-        self.input_window = curses.newwin(0, 0, 0, 61) 
+        self.input_window = curses.newwin(0, 0, 0, world_width * 3 + 2 + 20) 
         self.input_window.keypad(1)
 
         self.game_window.box()

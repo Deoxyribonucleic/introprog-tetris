@@ -17,14 +17,11 @@ class Game:
         
         self.world = tetris.world.World(self.world_width, self.world_height)
 
-        self.world.add_block(tetris.block.Block(tetris.block.blocks[0], 0, self.world_height - 5))
-        self.world.add_block(tetris.block.Block(tetris.block.blocks[1], 2, self.world_height - 4))
-
         self.next_block = self.create_random_block()
         self.current_block = None
 
     def __enter__(self):
-        self.gui = tetris.gui.GUI()
+        self.gui = tetris.gui.GUI(self.world_width, self.world_height)
         return self
 
     def create_random_block(self):
@@ -48,16 +45,12 @@ class Game:
             if action != None:
                 if action == Action.rotate:
                     # fix this crap
-                    original_x = self.current_block.xpos
-                    original_y = self.current_block.ypos
                     self.current_block.rotate()
                     # if we end up colliding, reverse operation
                     if self.world.collides(self.current_block):
                         self.current_block.rotate()
                         self.current_block.rotate() # :D
                         self.current_block.rotate()
-                        self.current_block.xpos = original_x
-                        self.current_block.ypos = original_y
 
                 if action == Action.down:
                     self.tick()
