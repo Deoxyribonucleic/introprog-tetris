@@ -22,7 +22,7 @@ class GUI:
         self.setup_windows(world_width, world_height)
         
         self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
-        self.next_block_renderer = worldrenderer.NextBlockRenderer(self.status_window)
+        self.next_block_renderer = worldrenderer.NextBlockRenderer(self.next_block_window)
 
     def destroy(self):
         curses.nocbreak()
@@ -77,5 +77,6 @@ class GUI:
         
     def draw_status(self, next_block, score=0):
         self.next_block_renderer.draw(next_block)
+        self.next_block_window.refresh()
         self.status_window.refresh()
 
