@@ -29,3 +29,7 @@ class World:
         self.world.remove(line)
         self.world.insert(0, [None for x in range(self.width)])
 
+    def game_over(self):
+        return (None not in self.world[0])
+
+

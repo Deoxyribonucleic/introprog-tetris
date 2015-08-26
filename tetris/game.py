@@ -87,6 +87,9 @@ class Game:
                 self.points += 1
                 self.world.remove_line(self.world.line_check())
 
+            if self.world.game_over():
+                pass
+
 
             
     def tick(self):
