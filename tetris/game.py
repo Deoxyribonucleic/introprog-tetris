@@ -12,10 +12,15 @@ import copy
 class Game:
     def __init__(self):
         self.tick_interval = 1
-        self.points = 0
 
-        self.world_width = 14
-        self.world_height = 15
+        self.points = 0
+        self.level = 1
+        self.highscore = 0
+        self.continuous_soft_drop = 0
+        self.lines_cleared = 0
+
+        self.world_width = 10
+        self.world_height = 22 
         
         self.world = tetris.world.World(self.world_width, self.world_height)
 
@@ -29,21 +34,37 @@ class Game:
         self.gui = tetris.gui.GUI(self.world_width, self.world_height)
         return self
 
+    def get_points(self, nrows):
+        if nrows == 0:
+            return 0
+        elif nrows == 1:
+            return 40 * (self.level + 1) + self.continuous_soft_drop
+        elif nrows == 2:
+            return 100 * (self.level + 1) + self.continuous_soft_drop
+        elif nrows == 3:
+            return 300 * (self.level + 1) + self.continuous_soft_drop
+        else:
+            return 1200 * (self.level + 1) + self.continuous_soft_drop
+
+    def get_tick_interval(self):
+        if self.level < 10:
+            return 1 - self.level * .1
+        else:
+            return .05
+
     def create_random_block(self):
         if len(self.block_bag) == 0:
             self.block_bag = copy.copy(tetris.block.blocks)
             random.shuffle(self.block_bag)
 
-        new_block = random.choice(self.block_bag)
-        self.block_bag.remove(new_block)
-        return tetris.block.Block(new_block, self.world_width / 2 - 2, 0)
+        return tetris.block.Block(self.block_bag.pop(), self.world_width / 2, 0)
 
     def run(self):
         self.start = time.time()
         self.last_tick = self.start
 
         # render once at start
-        self.gui.draw_status(self.next_block, self.points)
+        self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
         self.gui.draw_game(self.world, self.current_block)
 
         while True:
@@ -51,7 +72,7 @@ class Game:
                 self.current_block = self.next_block
                 self.next_block = self.create_random_block()
                 self.gui.draw_game(self.world, self.current_block)
-                self.gui.draw_status(self.next_block, self.points)
+                self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
 
             action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
 
@@ -66,7 +87,7 @@ class Game:
                         self.current_block.rotate()
 
                 if action == Action.down:
-                    self.tick()
+                    self.tick(True)
 
                 if action == Action.move_left:
                     self.current_block.xpos -= 1
@@ -78,27 +99,37 @@ class Game:
                     if self.world.collides(self.current_block):
                         self.current_block.xpos -= 1
 
-#                self.gui.status_window.addch(action)
                 self.gui.draw_game(self.world, self.current_block)
 
             if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
 
+            rows_removed = 0
             while self.world.line_check() is not None:
-                self.points += 1
+                rows_removed += 1
                 self.world.remove_line(self.world.line_check())
+
+            self.points += self.get_points(rows_removed)
+
+            if rows_removed:
+                self.lines_cleared += rows_removed
+                if self.lines_cleared >= 10:
+                    self.lines_cleared = 0
+                    self.level += 1
+                    self.tick_interval = self.get_tick_interval()
 
             if self.world.game_over():
                 pass
 
 
             
-    def tick(self):
-#        self.gui.status_window.addch('T')
-        self.last_tick = time.time()
+    def tick(self, soft_drop = False):
+        if soft_drop:
+            self.continuous_soft_drop += 1
+        else:
+            self.continuous_soft_drop = 0
 
-        if self.tick_interval <= 0.2:
-            self.tick_interval = 0.95 ** self.points
+        self.last_tick = time.time()
 
         self.current_block.ypos += 1
         if self.world.collides(self.current_block):
@@ -107,7 +138,7 @@ class Game:
             self.current_block = None
 
         self.gui.draw_game(self.world, self.current_block)
-        self.gui.draw_status(self.next_block, self.points)
+        self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()

@@ -98,14 +98,19 @@ class GUI:
         
         self.game_window.refresh()
         
-    def draw_status(self, next_block, score):
+    def draw_status(self, next_block, score, level, highscore):
+        self.status_window.erase()
         self.status_window.box()
         self.status_window.addstr(3,4,"Next block")
         self.next_block_window = self.status_window.derwin(10,14,4,3)
         self.next_block_window.box()
 
-        self.status_window.addstr(19,4,"Score")
-        self.score_window = self.status_window.derwin(1,14,20,3)        
+        self.status_window.addstr(19,4,"Score: " + str(score))
+        self.status_window.addstr(20,4,"Level: " + str(level))
+        self.status_window.addstr(22,4,"Hi-score: " + str(highscore))
+
+        self.score_window = self.status_window.derwin(1,14,20,3) # uh?
+
         self.next_block_renderer.draw(next_block)
         self.next_block_window.refresh()
         self.status_window.refresh()
