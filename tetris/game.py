@@ -6,6 +6,8 @@ import tetris.block
 import tetris.world
 
 import time
+import random
+import copy
 
 class Game:
     def __init__(self):
@@ -17,6 +19,9 @@ class Game:
         
         self.world = tetris.world.World(self.world_width, self.world_height)
 
+        random.seed(time.time())
+        self.block_bag = []
+
         self.next_block = self.create_random_block()
         self.current_block = None
 
@@ -25,7 +30,13 @@ class Game:
         return self
 
     def create_random_block(self):
-        return tetris.block.Block(tetris.block.blocks[0], self.world_width / 2 - 2, 0)
+        if len(self.block_bag) == 0:
+            self.block_bag = copy.copy(tetris.block.blocks)
+            random.shuffle(self.block_bag)
+
+        new_block = random.choice(self.block_bag)
+        self.block_bag.remove(new_block)
+        return tetris.block.Block(new_block, self.world_width / 2 - 2, 0)
 
     def run(self):
         self.start = time.time()
@@ -39,6 +50,7 @@ class Game:
             if self.current_block == None:
                 self.current_block = self.next_block
                 self.next_block = self.create_random_block()
+                self.gui.draw_game(self.world, self.current_block)
 
             action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
 
