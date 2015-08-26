@@ -63,6 +63,10 @@ class Game:
 
             if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
+
+            if self.world.line_check() is not None:
+                self.points += 1
+
             
     def tick(self):
         self.gui.status_window.addch('T')

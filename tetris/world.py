@@ -23,3 +23,8 @@ class World:
                     return True
         return False
         
+    def line_check(self):
+        for row in self.world:
+            if row[1] != 0:
+                return row
+
