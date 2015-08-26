@@ -43,16 +43,30 @@ class GUI:
 
     def setup_windows(self, world_width, world_height):
         self.game_window = curses.newwin(world_height * 2 + 2, world_width * 3 + 2, 0, 0)
-        self.status_window = curses.newwin(world_height * 2 + 2, 20, 0, world_width * 3 + 2)
+        self.status_window = curses.newwin(world_height * 2 + 2, 20, 0, 0)
 
-        self.input_window = curses.newwin(0, 0, 0, world_width * 3 + 2 + 20) 
+        self.input_window = curses.newwin(0, 0, 0, 0) # world_width * 3 + 2 + 20) 
         self.input_window.keypad(1)
 
         self.game_window.box()
         self.status_window.box()
 
+        self.center_windows()
+
         self.game_window.refresh()
         self.status_window.refresh()
+
+    def center_windows(self):
+        screen_size = self.stdscr.getmaxyx()
+        game_window_size = self.game_window.getmaxyx()
+        status_window_size = self.status_window.getmaxyx()
+
+        self.game_window.mvwin(screen_size[0] / 2 - game_window_size[0] / 2,
+                screen_size[1] / 2 - (game_window_size[1] + status_window_size[1]) / 2)
+        self.status_window.mvwin(screen_size[0] / 2 - game_window_size[0] / 2,
+                screen_size[1] / 2 - (game_window_size[1] + status_window_size[1]) / 2 + game_window_size[1])
+        #self.input_window.mvwin(0,
+        #        screen_size[1] / 2 - (game_window_size[1] + status_window_size[1]) / 2 + game_window_size[1] + status_window_size[1])
 
     def get_input(self, timeout):
         self.input_window.timeout(int(timeout * 1000))
@@ -68,8 +82,10 @@ class GUI:
         self.world_renderer.draw(world)
         if current_block:
             self.world_renderer.draw_block(current_block)
+        
         self.game_window.refresh()
         
     def draw_status(self, next_block, score):
+        self.status_window.box()
         self.status_window.refresh()
 
