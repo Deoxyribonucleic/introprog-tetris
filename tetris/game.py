@@ -43,7 +43,7 @@ class Game:
         self.last_tick = self.start
 
         # render once at start
-        self.gui.draw_status(None, None)
+        self.gui.draw_status(self.next_block, None)
         self.gui.draw_game(self.world, self.current_block)
 
         while True:
@@ -77,7 +77,7 @@ class Game:
                     if self.world.collides(self.current_block):
                         self.current_block.xpos -= 1
 
-                self.gui.status_window.addch(action)
+#                self.gui.status_window.addch(action)
                 self.gui.draw_game(self.world, self.current_block)
 
             if time.time() > (self.last_tick + self.tick_interval):
@@ -93,7 +93,7 @@ class Game:
 
             
     def tick(self):
-        self.gui.status_window.addch('T')
+#        self.gui.status_window.addch('T')
         self.last_tick = time.time()
 
         if self.tick_interval <= 0.2:
@@ -106,7 +106,7 @@ class Game:
             self.current_block = None
 
         self.gui.draw_game(self.world, self.current_block)
-        self.gui.draw_status(None, None)
+        self.gui.draw_status(self.next_block, None)
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.gui.destroy()

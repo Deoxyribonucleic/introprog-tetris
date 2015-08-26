@@ -6,8 +6,6 @@ import curses
 import worldrenderer
 import game
 
-
-
 class GUI:
     def __init__(self, world_width, world_height):
         self.stdscr = None
@@ -24,7 +22,7 @@ class GUI:
         self.setup_windows(world_width, world_height)
         
         self.world_renderer = worldrenderer.WorldRenderer(self.game_window)
-
+        self.next_block_renderer = worldrenderer.NextBlockRenderer(self.status_window)
 
     def destroy(self):
         curses.nocbreak()
@@ -87,5 +85,12 @@ class GUI:
         
     def draw_status(self, next_block, score):
         self.status_window.box()
+        self.status_window.addstr(3,4,"Next block")
+        self.next_block_window = self.status_window.derwin(10,14,4,3)
+        self.next_block_window.box()
+
+        self.status_window.addstr(19,4,"Score")
+        self.score_window = self.status_window.derwin(1,14,20,3)        
+        self.next_block_renderer.draw(next_block)
         self.status_window.refresh()
 
