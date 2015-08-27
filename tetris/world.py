@@ -30,6 +30,9 @@ class World:
         self.world.insert(0, [None for x in range(self.width)])
 
     def game_over(self):
-        return (None not in self.world[0])
+        for element in self.world[0]:
+            if element != None:
+                return True
+        return False
 
 

@@ -119,7 +119,7 @@ class Game:
                     self.tick_interval = self.get_tick_interval()
 
             if self.world.game_over():
-                pass
+                break
 
 
             
