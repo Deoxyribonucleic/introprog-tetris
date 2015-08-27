@@ -72,7 +72,11 @@ class Game:
             self.block_bag = copy.copy(tetris.block.blocks)
             random.shuffle(self.block_bag)
 
-        return tetris.block.Block(self.block_bag.pop(), self.world_width / 2, 0)
+        block = tetris.block.Block(self.block_bag.pop(), self.world_width / 2, 0)
+        # rotate randomly
+        for x in range(0, random.randint(0, 3)):
+            block.rotate()
+        return block
 
     def run(self):
         self.start = time.time()
