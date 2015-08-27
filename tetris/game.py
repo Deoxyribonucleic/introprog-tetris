@@ -11,6 +11,7 @@ import copy
 
 class Game:
     def __init__(self):
+        self.quit = False
         self.tick_interval = 1
 
         self.world_width = 10
@@ -67,65 +68,72 @@ class Game:
         self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
         self.gui.draw_game(self.world, self.current_block)
 
-        while True:
+        while not self.quit:
             if self.current_block == None:
                 self.current_block = self.next_block
                 self.next_block = self.create_random_block()
                 self.gui.draw_game(self.world, self.current_block)
                 self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
 
-            action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
-
-            if action != None:
-                if action == Action.rotate:
-                    # fix this crap
-                    self.current_block.rotate()
-                    # if we end up colliding, reverse operation
-                    if self.world.collides(self.current_block):
-                        self.current_block.rotate()
-                        self.current_block.rotate() # :D
-                        self.current_block.rotate()
-
-                if action == Action.down:
-                    self.tick(True)
-
-                if action == Action.move_left:
-                    self.current_block.xpos -= 1
-                    if self.world.collides(self.current_block):
-                        self.current_block.xpos += 1
-
-                if action == Action.move_right:
-                    self.current_block.xpos += 1
-                    if self.world.collides(self.current_block):
-                        self.current_block.xpos -= 1
-
-                self.gui.draw_game(self.world, self.current_block)
+            self.handle_input()
 
             if time.time() > (self.last_tick + self.tick_interval):
                 self.tick()
 
-            rows_removed = 0
-            while self.world.line_check() is not None:
-                rows_removed += 1
-                self.world.remove_line(self.world.line_check())
-
-            self.points += self.get_points(rows_removed)
-
-            if rows_removed:
-                self.lines_cleared += rows_removed
-                if self.lines_cleared >= 10:
-                    self.lines_cleared = 0
-                    self.level += 1
-                    self.tick_interval = self.get_tick_interval()
-
-            if self.world.game_over():
-                play_again = self.gui.prompt_play_again(self.points, self.highscore)
-                if play_again:
-                    self.reset_game()
-                else:
-                    break
+            self.remove_full_lines()
+            self.check_game_over()
 
 
+    def handle_input(self):
+        action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
+
+        if action != None:
+            if action == Action.rotate:
+                # fix this crap
+                self.current_block.rotate()
+                # if we end up colliding, reverse operation
+                if self.world.collides(self.current_block):
+                    self.current_block.rotate()
+                    self.current_block.rotate() # :D
+                    self.current_block.rotate()
+
+            if action == Action.down:
+                self.tick(True)
+
+            if action == Action.move_left:
+                self.current_block.xpos -= 1
+                if self.world.collides(self.current_block):
+                    self.current_block.xpos += 1
+
+            if action == Action.move_right:
+                self.current_block.xpos += 1
+                if self.world.collides(self.current_block):
+                    self.current_block.xpos -= 1
+
+            self.gui.draw_game(self.world, self.current_block)
+
+    def check_game_over(self):
+        if self.world.game_over():
+            play_again = self.gui.prompt_play_again(self.points, self.highscore)
+            if play_again:
+                self.reset_game()
+            else:
+                self.quit = True
+
+    def remove_full_lines(self):
+        rows_removed = 0
+        while self.world.line_check() is not None:
+            rows_removed += 1
+            self.world.remove_line(self.world.line_check())
+
+        self.points += self.get_points(rows_removed)
+
+        if rows_removed:
+            self.lines_cleared += rows_removed
+            if self.lines_cleared >= 10:
+                self.lines_cleared = 0
+                self.level += 1
+                self.tick_interval = self.get_tick_interval()
             
     def tick(self, soft_drop = False):
         if soft_drop:
