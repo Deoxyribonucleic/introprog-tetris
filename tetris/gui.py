@@ -150,3 +150,13 @@ class GUI:
             elif key == 13:
                 return selection
 
+    def show_splash(self):
+        screen_size = self.stdscr.getmaxyx()
+        splash_window = curses.newwin(10, 30, screen_size[0]/2 - 5, screen_size[1]/2 - 15)
+        splash_window.box()
+        splash_window.addstr(2, 10, "Welcome to")
+        splash_window.addstr(4, 8, "T E X T R I S")
+        splash_window.addstr(6, 4, "Press any key to play")
+        splash_window.refresh()
+        a=self.input_window.getch()
+        curses.flushinp()

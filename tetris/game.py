@@ -86,6 +86,8 @@ class Game:
         self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
         self.gui.draw_game(self.world, self.current_block)
 
+        self.gui.show_splash()
+        
         while not self.quit:
             if self.current_block == None:
                 self.current_block = self.next_block
