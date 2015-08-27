@@ -7,6 +7,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Play some Textris')
 parser.add_argument('--height',
                     dest='height',
+                    default=22,
                     type=int,
                     help='Specify the height of the window between 12 and 22. Defaults to 22.')
 args = parser.parse_args()
