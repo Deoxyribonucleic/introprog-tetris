@@ -30,13 +30,13 @@ class Game:
 
     def read_highscore(self):
         try:
-            with open(os.getenv("HOME") + '/.tetris', 'r') as highscore_file:
+            with open(os.getenv("HOME") + '/.textris', 'r') as highscore_file:
                 self.highscore = int(highscore_file.read())
         except IOError:
             self.write_highscore()
 
     def write_highscore(self):
-        with open(os.getenv("HOME") + '/.tetris', 'w') as highscore_file:
+        with open(os.getenv("HOME") + '/.textris', 'w') as highscore_file:
             return highscore_file.write(str(self.highscore))
 
     def reset_game(self):
