@@ -102,6 +102,9 @@ class Game:
         action = self.gui.get_input((self.last_tick + self.tick_interval) - time.time())
 
         if action != None:
+            if action == Action.quit:
+                self.quit = True
+
             if action == Action.rotate:
                 # fix this crap
                 self.current_block.rotate()
@@ -178,4 +181,5 @@ class Action:
     down = 2
     move_left = 3
     move_right = 4
+    quit = 5
 

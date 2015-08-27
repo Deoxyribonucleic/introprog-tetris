@@ -16,7 +16,8 @@ class GUI:
                     curses.KEY_UP: game.Action.rotate,
                     curses.KEY_DOWN: game.Action.down,
                     curses.KEY_LEFT: game.Action.move_left,
-                    curses.KEY_RIGHT: game.Action.move_right
+                    curses.KEY_RIGHT: game.Action.move_right,
+                    27: game.Action.quit
                 }
 
         self.setup_screen()
