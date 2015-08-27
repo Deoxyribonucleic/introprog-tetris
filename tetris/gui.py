@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import curses
+import time
 
 import renderer
 import game
@@ -28,6 +29,7 @@ class GUI:
     def destroy(self):
         curses.nocbreak()
         self.stdscr.keypad(0)
+        curses.nl()
         curses.curs_set(1)
         curses.echo()
         curses.endwin()
@@ -40,6 +42,7 @@ class GUI:
         curses.noecho()
         curses.cbreak()
         curses.curs_set(0)
+        curses.nonl()
         self.stdscr.keypad(1)
 
     def init_colors(self):
@@ -52,11 +55,13 @@ class GUI:
         curses.init_pair(7, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
     def setup_windows(self, world_width, world_height):
+        self.input_window = curses.newwin(self.stdscr.getmaxyx()[0] - 2, self.stdscr.getmaxyx()[1] - 2, 0, 0) # world_width * 3 + 2 + 20) 
+        self.input_window.keypad(1)
+        self.input_window.refresh()
+        self.stdscr.refresh()
+
         self.game_window = curses.newwin(world_height * 2 + 2, world_width * 3 + 2, 0, 0)
         self.status_window = curses.newwin(world_height * 2 + 2, 20, 0, 0)
-
-        self.input_window = curses.newwin(0, 0, 0, 0) # world_width * 3 + 2 + 20) 
-        self.input_window.keypad(1)
 
         self.next_block_window = self.status_window.derwin(10,14,4,3)
         self.next_block_window.box()
@@ -114,4 +119,31 @@ class GUI:
         self.next_block_renderer.draw(next_block)
         self.next_block_window.refresh()
         self.status_window.refresh()
+
+    def prompt_play_again(self, score, highscore):
+        screen_size = self.stdscr.getmaxyx()
+        prompt_window = curses.newwin(10, 24, screen_size[0]/2 - 5, screen_size[1]/2 - 12)
+        prompt_window.box()
+
+        prompt_window.addstr(2, 7, "GAME OVER!")
+
+        score_string = "Score: " + str(score)
+        prompt_window.addstr(3, 12 - len(score_string) / 2, score_string)
+        prompt_window.addstr(4, 5, "New high score!")
+        prompt_window.addstr(6, 7, "Play again?")
+
+        selection = True
+        prompt_window.addstr(7, 7, "")
+
+        self.input_window.timeout(-1)
+
+        while True:
+            prompt_window.addstr(7, 7, ("[yes]" if selection else " yes ") + "  " + (" no " if selection else "[no]"))
+            prompt_window.refresh()
+
+            key = self.input_window.getch()
+            if key == curses.KEY_LEFT or key == curses.KEY_RIGHT:
+                selection = not selection
+            elif key == 13:
+                return selection
 

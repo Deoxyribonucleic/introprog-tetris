@@ -13,26 +13,26 @@ class Game:
     def __init__(self):
         self.tick_interval = 1
 
+        self.world_width = 10
+        self.world_height = 22 
+
+        random.seed(time.time())
+        self.reset_game()
+
+    def __enter__(self):
+        self.gui = tetris.gui.GUI(self.world_width, self.world_height)
+        return self
+
+    def reset_game(self):
         self.points = 0
         self.level = 1
         self.highscore = 0
         self.continuous_soft_drop = 0
         self.lines_cleared = 0
-
-        self.world_width = 10
-        self.world_height = 22 
-        
         self.world = tetris.world.World(self.world_width, self.world_height)
-
-        random.seed(time.time())
         self.block_bag = []
-
         self.next_block = self.create_random_block()
         self.current_block = None
-
-    def __enter__(self):
-        self.gui = tetris.gui.GUI(self.world_width, self.world_height)
-        return self
 
     def get_points(self, nrows):
         if nrows == 0:
@@ -119,7 +119,11 @@ class Game:
                     self.tick_interval = self.get_tick_interval()
 
             if self.world.game_over():
-                break
+                play_again = self.gui.prompt_play_again(self.points, self.highscore)
+                if play_again:
+                    self.reset_game()
+                else:
+                    break
 
 
             
