@@ -10,12 +10,12 @@ import random
 import copy
 
 class Game:
-    def __init__(self):
+    def __init__(self, height):
         self.quit = False
         self.tick_interval = 1
 
         self.world_width = 10
-        self.world_height = 22 
+        self.world_height = height 
 
         random.seed(time.time())
         self.reset_game()
