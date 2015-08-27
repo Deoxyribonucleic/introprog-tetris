@@ -177,7 +177,9 @@ class Game:
         self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.write_highscore()
+        if self.points > self.highscore:
+            self.highscore = self.points
+            self.write_highscore()
         self.gui.destroy()
 
 class Action:
