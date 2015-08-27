@@ -22,7 +22,6 @@ class GUI:
         self.setup_screen()
         self.setup_windows(world_width, world_height)
 
-        
         self.world_renderer = renderer.WorldRenderer(self.game_window)
         self.next_block_renderer = renderer.NextBlockRenderer(self.next_block_window)
 
@@ -129,7 +128,10 @@ class GUI:
 
         score_string = "Score: " + str(score)
         prompt_window.addstr(3, 12 - len(score_string) / 2, score_string)
-        prompt_window.addstr(4, 5, "New high score!")
+
+        if score > highscore:
+            prompt_window.addstr(4, 5, "New high score!")
+
         prompt_window.addstr(6, 7, "Play again?")
 
         selection = True

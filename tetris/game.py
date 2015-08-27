@@ -5,6 +5,7 @@ import tetris.gui
 import tetris.block
 import tetris.world
 
+import os
 import time
 import random
 import copy
@@ -17,6 +18,9 @@ class Game:
         self.world_width = 10
         self.world_height = height 
 
+        self.highscore = 0
+        self.read_highscore()
+
         random.seed(time.time())
         self.reset_game()
 
@@ -24,10 +28,20 @@ class Game:
         self.gui = tetris.gui.GUI(self.world_width, self.world_height)
         return self
 
+    def read_highscore(self):
+        try:
+            with open(os.getenv("HOME") + '/.tetris', 'r') as highscore_file:
+                self.highscore = int(highscore_file.read())
+        except IOError:
+            self.write_highscore()
+
+    def write_highscore(self):
+        with open(os.getenv("HOME") + '/.tetris', 'w') as highscore_file:
+            return highscore_file.write(str(self.highscore))
+
     def reset_game(self):
         self.points = 0
         self.level = 1
-        self.highscore = 0
         self.continuous_soft_drop = 0
         self.lines_cleared = 0
         self.world = tetris.world.World(self.world_width, self.world_height)
@@ -115,6 +129,9 @@ class Game:
     def check_game_over(self):
         if self.world.game_over():
             play_again = self.gui.prompt_play_again(self.points, self.highscore)
+            if self.points > self.highscore:
+                self.highscore = self.points
+
             if play_again:
                 self.reset_game()
             else:
@@ -153,6 +170,7 @@ class Game:
         self.gui.draw_status(self.next_block, self.points, self.level, self.highscore)
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self.write_highscore()
         self.gui.destroy()
 
 class Action:
