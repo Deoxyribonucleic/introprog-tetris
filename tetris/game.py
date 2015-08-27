@@ -181,7 +181,7 @@ class Game:
     def __exit__(self, exc_type, exc_value, traceback):
         if self.points > self.highscore:
             self.highscore = self.points
-            self.write_highscore()
+        self.write_highscore()
         self.gui.destroy()
 
 class Action:
